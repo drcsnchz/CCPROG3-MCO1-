@@ -39,11 +39,7 @@ public class Field {
      * @return Soil object
      */
     public Soil getSoil(int row, int col) {
-        // FIX: prevent ArrayIndexOutOfBoundsException
-        if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
-            return grid[row][col];
-        }
-        return null;
+        return grid[row][col];
     }
 
     /**
@@ -65,7 +61,7 @@ public class Field {
      */
     public void applyMeteoriteEvent() {
 
-        // Example pattern — adjust to match actual map requirement
+
         for (int row = 3; row <= 6; row++) {
             for (int col = 3; col <= 6; col++) {
                 grid[row][col].applyMeteorite();
@@ -85,11 +81,6 @@ public class Field {
      * @return true if excavation successful
      */
     public boolean excavateTile(int row, int col) {
-
-
-        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
-            return false;
-        }
 
         if (excavationsToday >= 5) {
             return false;
