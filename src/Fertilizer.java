@@ -60,5 +60,4 @@ public class Fertilizer {
     public boolean isExpired() {
         return effectDays <= 0;
     }
-
 }
