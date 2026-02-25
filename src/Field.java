@@ -39,7 +39,11 @@ public class Field {
      * @return Soil object
      */
     public Soil getSoil(int row, int col) {
-        return grid[row][col];
+        // FIX: prevent ArrayIndexOutOfBoundsException
+        if (row >= 0 && row < SIZE && col >= 0 && col < SIZE) {
+            return grid[row][col];
+        }
+        return null;
     }
 
     /**
@@ -81,6 +85,11 @@ public class Field {
      * @return true if excavation successful
      */
     public boolean excavateTile(int row, int col) {
+
+        // FIX: prevent invalid coordinates crash
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
+            return false;
+        }
 
         if (excavationsToday >= 5) {
             return false;

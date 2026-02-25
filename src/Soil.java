@@ -93,7 +93,8 @@ public class Soil {
      * @return true if applied successfully, false otherwise
      */
     public boolean applyFertilizer(Fertilizer fertilizer) {
-        if (this.fertilizer == null) {
+        // FIX: Prevent fertilizing meteorite-affected tile
+        if (this.fertilizer == null && !meteoriteAffected) {
             this.fertilizer = fertilizer;
             return true;
         }
@@ -142,6 +143,9 @@ public class Soil {
     public void applyMeteorite() {
         meteoriteAffected = true;
         plant = null;
+
+        // FIX: Meteorite destroys fertilizer as well
+        fertilizer = null;
     }
 
     /**
