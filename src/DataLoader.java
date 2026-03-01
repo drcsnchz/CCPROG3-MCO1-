@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles loading and saving game data from JSON files.
- * Uses only standard Java API.
+ * Handles loading and saving game data from JSON files
+ * Uses only standard Java API
  */
 public class DataLoader {
 
