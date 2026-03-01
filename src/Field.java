@@ -8,6 +8,7 @@
  * - Meteorite event
  * - Excavation limits
  */
+
 public class Field {
 
     private static final int SIZE = 10;

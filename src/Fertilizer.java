@@ -4,6 +4,7 @@
  *
  * Fertilizer increases plant growth by +1 stage while active and it lasts for a limited number of effect days
  */
+
 public class Fertilizer {
 
     private String name;

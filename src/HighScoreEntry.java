@@ -1,8 +1,10 @@
+
 /**
  * Represents a single high score entry
  *
  * Stores the player's name and their final savings.
  */
+
 public class HighScoreEntry {
 
     private String playerName;

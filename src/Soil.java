@@ -7,6 +7,7 @@
  * - A fertilizer
  * - Meteorite damage
  */
+
 public class Soil {
 
     private String soilType;

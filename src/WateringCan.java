@@ -5,6 +5,7 @@
  * The watering can has limited water per day
  */
 
+
 public class WateringCan {
 
     private static final int MAX_WATER = 10;
