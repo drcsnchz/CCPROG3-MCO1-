@@ -14,10 +14,11 @@ public class Plant {
     private boolean watered;
 
 
-     // Constructs a Plant template loaded from external data
-     // Growth starts at 0 and the plant is initially not watered
+     /**  Constructs a Plant template loaded from external data
+      *   Growth starts at 0 and the plant is initially not watered
+      */
 
-     /*
+     /**
      * @param name the name of the plant
      * @param seedPrice the cost to plant the seed
      * @param cropPrice the selling price per crop unit
@@ -39,9 +40,11 @@ public class Plant {
     }
 
 
-     // Copy constructor used when planting from a template and insures each planted instance has independent growth state
+     /**
+      *  Copy constructor used when planting from a template and insures each planted instance has independent growth state
+      */
 
-     /*
+     /**
      * @param other the template plant to copy
      */
     public Plant(Plant other) {
@@ -104,17 +107,20 @@ public class Plant {
         }
     }
 
-     // Processes plant growth for the next day
-     // Growth occurs only if the plant was watered and is not already mature
 
-     /*
+     /**
+      * Processes plant growth for the next day
+      * Growth occurs only if the plant was watered and is not already mature
+      */
+
+     /**
      * Growth increases by:
      * 1 normally
      * +1 if planted on preferred soil
      * +1 if fertilizer is present
      /
 
-     /*
+     /**
      * @param soilType the soil type of the tile
      * @param hasFertilizer true if fertilizer is applied
      * @return true if the plant grew, false otherwise
