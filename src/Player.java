@@ -1,6 +1,5 @@
 
 //Represents the player of the game
-
  /**
  * The player has a name and savings which are used
  * to perform actions such as planting, watering,

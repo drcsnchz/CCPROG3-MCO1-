@@ -1,56 +1,56 @@
+
+/**
+ * Represents the watering can used by the player
+ *
+ * The watering can has limited water per day
+ */
+
 public class WateringCan {
+
+    private static final int MAX_WATER = 10;
+    private int currentWater;
+
     /**
-     * Represents the watering can used by the player
-     *
-     * The watering can has limited water per day
+     * Constructs a watering can with full capacity
      */
-    public class WateringCan {
+    public WateringCan() {
+        currentWater = MAX_WATER;
+    }
 
-        private static final int MAX_WATER = 10;
-        private int currentWater;
+    /**
+     * Attempts to water a soil tile
+     *
+     * @param soil the soil to water
+     * @return true if watering was successful
+     */
+    public boolean water(Soil soil) {
 
-        /**
-         * Constructs a watering can with full capacity
-         */
-        public WateringCan() {
-            currentWater = MAX_WATER;
-        }
-
-        /**
-         * Attempts to water a soil tile
-         *
-         * @param soil the soil to water
-         * @return true if watering was successful
-         */
-        public boolean water(Soil soil) {
-
-            if (currentWater <= 0) {
-                return false;
-            }
-
-            if (soil.waterPlant()) {
-                currentWater--;
-                return true;
-            }
-
+        if (currentWater <= 0) {
             return false;
         }
 
-        /**
-         * Refills the watering can
-         * Called at the start of a new day
-         */
-        public void refill() {
-            currentWater = MAX_WATER;
+        if (soil.waterPlant()) {
+            currentWater--;
+            return true;
         }
 
-        /**
-         * Gets remaining water
-         *
-         * @return remaining water
-         */
-        public int getCurrentWater() {
-            return currentWater;
-        }
+        return false;
+    }
+
+    /**
+     * Refills the watering can
+     * Called at the start of a new day
+     */
+    public void refill() {
+        currentWater = MAX_WATER;
+    }
+
+    /**
+     * Gets remaining water
+     *
+     * @return remaining water
+     */
+    public int getCurrentWater() {
+        return currentWater;
     }
 }
