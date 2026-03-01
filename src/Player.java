@@ -1,9 +1,10 @@
-/**
- * Represents the player of the game.
- *
+
+//Represents the player of the game
+
+ /**
  * The player has a name and savings which are used
  * to perform actions such as planting, watering,
- * fertilizing, and excavation.
+ * fertilizing, and excavation
  */
 public class Player {
 
@@ -11,8 +12,8 @@ public class Player {
     private int savings;
 
     /**
-     * Constructs a Player with the given name.
-     * Starting savings is set to 1000 as required by game rules.
+     * Constructs a Player with the given name
+     * Starting savings is set to 1000 as required by game rules
      *
      * @param name the player's name
      */
@@ -31,11 +32,12 @@ public class Player {
         return savings;
     }
 
-    /**
-     * Adds money to the player's savings.
-     *
-     * Pre-condition: amount must be positive.
-     * Post-condition: savings increases if valid.
+
+     // Adds money to the player's savings.
+
+     /**
+     * Pre-condition: amount must be positive
+     * Post-condition: savings increases if valid
      *
      * @param amount the amount to add
      */
@@ -45,11 +47,12 @@ public class Player {
         }
     }
 
-    /**
-     * Attempts to deduct money from the player's savings.
-     *
-     * Pre-condition: amount must be positive.
-     * Post-condition: savings decreases only if sufficient funds exist.
+
+     //Attempts to deduct money from the player's savings
+
+     /**
+     * Pre-condition: amount must be positive
+     * Post-condition: savings decreases only if sufficient funds exist
      *
      * @param amount the amount to deduct
      * @return true if deduction successful, false otherwise
@@ -67,8 +70,8 @@ public class Player {
         savings += 50;
     }
 
-    /**
-     * Returns a formatted string representation of the player.
+
+     /** Returns a formatted string representation of the player
      *
      * @return string containing player name and savings
      */

@@ -1,5 +1,5 @@
 /**
- * Represents a single tile of soil in the field.
+ * Represents a single tile of soil in the field
  *
  * A soil tile may contain:
  * - A plant
@@ -15,7 +15,7 @@ public class Soil {
     private String originalSoilType;
 
     /**
-     * Constructs a Soil tile with a given soil type.
+     * Constructs a Soil tile with a given soil type
      *
      * @param soilType the type of soil (loam, sand, gravel)
      */
@@ -48,7 +48,7 @@ public class Soil {
     }
 
     /**
-     * Plants a seed on this tile.
+     * Plants a seed on this tile
      *
      * Pre-condition:
      * - No existing plant
@@ -71,7 +71,7 @@ public class Soil {
     }
 
     /**
-     * Harvests the plant if mature.
+     * Harvests the plant if mature
      *
      * @return money earned from harvest (0 if not mature or no plant)
      */
@@ -85,9 +85,9 @@ public class Soil {
     }
 
     /**
-     * Applies fertilizer to this tile.
+     * Applies fertilizer to this tile
      *
-     * Pre-condition: No fertilizer currently applied.
+     * Pre-condition: No fertilizer currently applied
      *
      * @param fertilizer fertilizer to apply
      * @return true if applied successfully, false otherwise
@@ -101,7 +101,7 @@ public class Soil {
     }
 
     /**
-     * Waters the plant on this tile.
+     * Waters the plant on this tile
      *
      * @return true if watering successful, false otherwise
      */
@@ -114,7 +114,7 @@ public class Soil {
     }
 
     /**
-     * Processes next-day growth logic for this tile.
+     * Processes next-day growth logic for this tile
      *
      * - Plant grows only if watered
      * - Fertilizer decreases only if plant grows
@@ -145,8 +145,8 @@ public class Soil {
     }
 
     /**
-     * Excavates the meteorite damage.
-     * Restores soil and permanently fertilizes the tile.
+     * Excavates the meteorite damage
+     * Restores soil and permanently fertilizes the tile
      */
     public void excavate() {
         if (meteoriteAffected) {

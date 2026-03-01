@@ -1,5 +1,5 @@
 /**
- * Represents a single high score entry.
+ * Represents a single high score entry
  *
  * Stores the player's name and their final savings.
  */
@@ -9,7 +9,7 @@ public class HighScoreEntry {
     private int finalSavings;
 
     /**
-     * Constructs a HighScoreEntry.
+     * Constructs a HighScoreEntry
      *
      * @param playerName the name of the player
      * @param finalSavings the player's final savings
@@ -20,7 +20,7 @@ public class HighScoreEntry {
     }
 
     /**
-     * Gets the player's name.
+     * Gets the player's name
      *
      * @return player name
      */
@@ -29,7 +29,7 @@ public class HighScoreEntry {
     }
 
     /**
-     * Gets the player's final savings.
+     * Gets the player's final savings
      *
      * @return final savings
      */

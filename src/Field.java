@@ -1,5 +1,5 @@
 /**
- * Represents the 10x10 field of soil tiles.
+ * Represents the 10x10 field of soil tiles
  *
  * The Field manages:
  * - The grid of Soil tiles
@@ -15,7 +15,7 @@ public class Field {
     private int excavationsToday;
 
     /**
-     * Constructs a Field using a predefined soil layout.
+     * Constructs a Field using a predefined soil layout
      *
      * @param soilLayout a 10x10 array of soil type strings
      */
@@ -32,7 +32,7 @@ public class Field {
     }
 
     /**
-     * Gets a Soil tile at given coordinates.
+     * Gets a Soil tile at given coordinates
      *
      * @param row row index (0–9)
      * @param col column index (0–9)
@@ -43,8 +43,8 @@ public class Field {
     }
 
     /**
-     * Processes next-day logic for all tiles.
-     * Resets daily excavation counter.
+     * Processes next-day logic for all tiles
+     * Resets daily excavation counter
      */
     public void nextDay() {
         for (int row = 0; row < SIZE; row++) {
@@ -57,7 +57,7 @@ public class Field {
     }
 
     /**
-     * Applies meteorite event to predefined tiles.
+     * Applies meteorite event to predefined tiles
      */
     public void applyMeteoriteEvent() {
 
@@ -70,7 +70,7 @@ public class Field {
     }
 
     /**
-     * Attempts to excavate a tile.
+     * Attempts to excavate a tile
      *
      * Pre-condition:
      * - Tile must be meteorite affected
@@ -98,7 +98,7 @@ public class Field {
     }
 
     /**
-     * Displays a simple text-based view of the field.
+     * Displays a simple text-based view of the field
      *
      * P = plant
      * M = meteorite

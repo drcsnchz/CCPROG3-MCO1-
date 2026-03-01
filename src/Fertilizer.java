@@ -10,7 +10,7 @@ public class Fertilizer {
     private int effectDays;
 
     /**
-     * Constructs a Fertilizer.
+     * Constructs a Fertilizer
      *
      * @param name the name of the fertilizer
      * @param price the cost to apply the fertilizer
@@ -48,8 +48,8 @@ public class Fertilizer {
     /**
      * Decreases effect days by 1.
      *
-     * Pre-condition: effectDays must be greater than 0.
-     * Post-condition: effectDays decreases by 1.
+     * Pre-condition: effectDays must be greater than 0
+     * Post-condition: effectDays decreases by 1
      */
     public void decrementEffect() {
         if (effectDays > 0) {
