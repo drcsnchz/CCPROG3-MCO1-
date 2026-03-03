@@ -8,12 +8,12 @@ public class VerdantSunGame {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // === INITIALIZATION ===
-        System.out.print("Enter player name: ");
+        showWelcomeScreen(sc);
+
+        System.out.print("\nEnter player name: ");
         String name = sc.nextLine();
 
         Player player = new Player(name);
-
 
         String[][] layout = DataLoader.loadMap("Map.json");
         Field field = new Field(layout);
@@ -23,7 +23,6 @@ public class VerdantSunGame {
         HighScoreManager highScoreManager =
                 new HighScoreManager("HighScores.json");
 
-        // Load plant & fertilizer templates
         Map<String, Plant> plantTemplates =
                 DataLoader.loadPlants("Plants.json");
 
@@ -33,58 +32,29 @@ public class VerdantSunGame {
         int day = 1;
         boolean running = true;
 
-        // === GAME LOOP ===
         while (running && day <= SEASON_LENGTH) {
 
             displayHeader(day, player, wateringCan);
             field.displayField();
-
             displayMenu();
 
             System.out.print("\nSelect action: ");
             int choice = readIntSafe(sc);
 
             switch (choice) {
-                case 1:
-                    handlePlantSeed(sc, player, field, plantTemplates);
-                    break;
-
-                case 2:
-                    handleWaterPlant(sc, wateringCan, field);
-                    break;
-
-                case 3:
-                    handleRefill(player, wateringCan);
-                    break;
-
-                case 4:
-                    handleFertilizer(sc, player, field, fertilizerTemplates);
-                    break;
-
-                case 5:
-                    handleRemoveHarvest(sc, player, field);
-                    break;
-
-                case 6:
-                    handleExcavate(sc, player, field);
-                    break;
-
-                case 7:
-                    day = nextDay(day, player, field);
-                    break;
-
-                case 0:
-                    running = false;
-                    break;
-
-                default:
-                    System.out.println("Invalid choice.");
+                case 1 -> handlePlantSeed(sc, player, field, plantTemplates);
+                case 2 -> handleWaterPlant(sc, wateringCan, field);
+                case 3 -> handleRefill(player, wateringCan);
+                case 4 -> handleFertilizer(sc, player, field, fertilizerTemplates);
+                case 5 -> handleRemoveHarvest(sc, player, field);
+                case 6 -> handleExcavate(sc, player, field);
+                case 7 -> day = nextDay(day, player, field);
+                case 0 -> running = false;
+                default -> System.out.println("Invalid choice.");
             }
         }
 
-        System.out.println("\n=== SEASON ENDED ===");
-        System.out.println("Final Savings: " + player.getSavings());
-
+        showEndScreen(player);
 
         highScoreManager.addScore(player.getName(),
                 player.getSavings());
@@ -93,31 +63,52 @@ public class VerdantSunGame {
     }
 
     // =====================================================
+    // WELCOME SCREEN
+    // =====================================================
+
+    private static void showWelcomeScreen(Scanner sc) {
+        System.out.println("=================================================");
+        System.out.println("                 VERDANT SUN");
+        System.out.println("=================================================");
+        System.out.println("Seasonal Farming Simulation");
+        System.out.println("Grow crops. Manage resources.");
+        System.out.println("Survive the meteorite event.");
+        System.out.println("=================================================");
+        System.out.print("Press ENTER to begin...");
+        sc.nextLine();
+    }
+
+    // =====================================================
     // DISPLAY
     // =====================================================
 
     private static void displayHeader(int day, Player player, WateringCan can) {
-        System.out.println("\n=================================");
-        System.out.println("Day: " + day + " / " + SEASON_LENGTH);
-        System.out.println("Savings: " + player.getSavings());
-        System.out.println("Water Level: " + can.getCurrentWater());
-        System.out.println("=================================");
+
+        System.out.println();
+        System.out.println("=================================================");
+        System.out.printf(" Day %d / %d%n", day, SEASON_LENGTH);
+        System.out.println("-------------------------------------------------");
+        System.out.printf(" Savings     : %,d%n", player.getSavings());
+        System.out.printf(" Water Level : %d%n", can.getCurrentWater());
+        System.out.println("=================================================");
     }
 
     private static void displayMenu() {
-        System.out.println("\n=== MAIN MENU ===");
-        System.out.println("1. Plant a seed");
-        System.out.println("2. Water a plant");
-        System.out.println("3. Refill watering can");
-        System.out.println("4. Apply fertilizer");
-        System.out.println("5. Remove/Harvest plant");
-        System.out.println("6. Excavate meteorite");
-        System.out.println("7. Next day");
-        System.out.println("0. Exit");
+
+        System.out.println("\n============== MAIN MENU ==============");
+        System.out.println(" 1. Plant a Seed");
+        System.out.println(" 2. Water a Plant");
+        System.out.println(" 3. Refill Watering Can (100)");
+        System.out.println(" 4. Apply Fertilizer");
+        System.out.println(" 5. Remove / Harvest Plant");
+        System.out.println(" 6. Excavate Meteorite (500)");
+        System.out.println(" 7. Next Day");
+        System.out.println(" 0. Exit Game");
+        System.out.println("=======================================");
     }
 
     // =====================================================
-    // ACTION HANDLERS
+    // ACTION HANDLERS (Cleaner Feedback)
     // =====================================================
 
     private static void handlePlantSeed(Scanner sc,
@@ -126,13 +117,14 @@ public class VerdantSunGame {
                                         Map<String, Plant> plantTemplates) {
 
         System.out.println("\nAvailable Plants:");
+
         int index = 1;
         Plant[] options = new Plant[plantTemplates.size()];
 
         for (Plant p : plantTemplates.values()) {
             if (player.getSavings() >= p.getSeedPrice()) {
                 System.out.println(index + ". " + p.getName()
-                        + " (Cost: " + p.getSeedPrice() + ")");
+                        + " (" + p.getSeedPrice() + ")");
                 options[index - 1] = p;
                 index++;
             }
@@ -147,7 +139,7 @@ public class VerdantSunGame {
         int choice = readIntSafe(sc);
 
         if (choice <= 0 || choice >= index) {
-            System.out.println("Invalid choice.");
+            System.out.println("Invalid selection.");
             return;
         }
 
@@ -161,7 +153,7 @@ public class VerdantSunGame {
         Soil soil = field.getSoil(row, col);
 
         if (soil.hasPlant() || soil.isMeteoriteAffected()) {
-            System.out.println("Cannot plant here.");
+            System.out.println("Cannot plant on this tile.");
             return;
         }
 
@@ -171,7 +163,7 @@ public class VerdantSunGame {
         }
 
         soil.plantSeed(selected);
-        System.out.println("Planted successfully.");
+        System.out.println("Plant successfully placed.");
     }
 
     private static void handleWaterPlant(Scanner sc,
@@ -191,15 +183,16 @@ public class VerdantSunGame {
         Soil soil = field.getSoil(row, col);
 
         if (can.water(soil)) {
-            System.out.println("Watered successfully.");
+            System.out.println("Plant watered successfully.");
         } else {
             System.out.println("Cannot water this tile.");
         }
     }
 
     private static void handleRefill(Player player, WateringCan can) {
+
         if (!player.deductMoney(100)) {
-            System.out.println("Not enough savings to refill.");
+            System.out.println("Not enough savings.");
             return;
         }
 
@@ -213,6 +206,7 @@ public class VerdantSunGame {
                                          Map<String, Fertilizer> fertilizerTemplates) {
 
         System.out.println("\nAvailable Fertilizers:");
+
         int index = 1;
         Fertilizer[] options =
                 new Fertilizer[fertilizerTemplates.size()];
@@ -220,7 +214,7 @@ public class VerdantSunGame {
         for (Fertilizer f : fertilizerTemplates.values()) {
             if (player.getSavings() >= f.getPrice()) {
                 System.out.println(index + ". " + f.getName()
-                        + " (Cost: " + f.getPrice() + ")");
+                        + " (" + f.getPrice() + ")");
                 options[index - 1] = f;
                 index++;
             }
@@ -235,7 +229,7 @@ public class VerdantSunGame {
         int choice = readIntSafe(sc);
 
         if (choice <= 0 || choice >= index) {
-            System.out.println("Invalid choice.");
+            System.out.println("Invalid selection.");
             return;
         }
 
@@ -282,7 +276,7 @@ public class VerdantSunGame {
 
         if (earnings > 0) {
             player.addMoney(earnings);
-            System.out.println("Harvested! Earned: " + earnings);
+            System.out.println("Harvested. Earned " + earnings);
         } else {
             soil.removePlant();
             System.out.println("Plant removed.");
@@ -304,7 +298,7 @@ public class VerdantSunGame {
         }
 
         if (field.excavateTile(row, col)) {
-            System.out.println("Excavated successfully.");
+            System.out.println("Tile excavated.");
         } else {
             System.out.println("Cannot excavate this tile.");
         }
@@ -320,26 +314,36 @@ public class VerdantSunGame {
 
         System.out.println("\nAdvancing to next day...");
 
-
         field.nextDay();
-
-        // Daily income
         player.addDailyIncome();
-
-        int nextDay = currentDay + 1;
 
         if (currentDay == 7) {
             triggerMeteorite(field);
         }
 
-        return nextDay;
+        return currentDay + 1;
     }
 
     private static void triggerMeteorite(Field field) {
 
-        System.out.println("\n*** METEORITE EVENT OCCURRED! ***");
-
+        System.out.println("\nMeteorite event occurred.");
         field.applyMeteoriteEvent();
+    }
+
+    // =====================================================
+    // END SCREEN
+    // =====================================================
+
+    private static void showEndScreen(Player player) {
+
+        System.out.println();
+        System.out.println("=================================================");
+        System.out.println("                SEASON COMPLETE");
+        System.out.println("=================================================");
+        System.out.printf(" Final Savings: %,d%n", player.getSavings());
+        System.out.println("=================================================");
+        System.out.println(" Thank you for playing Verdant Sun.");
+        System.out.println("=================================================");
     }
 
     // =====================================================
