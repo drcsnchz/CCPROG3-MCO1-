@@ -71,8 +71,8 @@ public class VerdantSunGame {
         System.out.println("                 VERDANT SUN");
         System.out.println("=================================================");
         System.out.println("           Seasonal Farming Simulation");
-        System.out.println("           Grow crops, Manage resources");
-        System.out.println("           Survive the meteorite event");
+        System.out.println("           Grow crops, Manage resources!");
+        System.out.println("         By Airam Tumbocon & Deric Sanchez");
         System.out.println("=================================================");
         System.out.print("Press ENTER to begin...");
         sc.nextLine();
