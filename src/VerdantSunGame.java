@@ -42,15 +42,40 @@ public class VerdantSunGame {
             int choice = readIntSafe(sc);
 
             switch (choice) {
-                case 1 -> handlePlantSeed(sc, player, field, plantTemplates);
-                case 2 -> handleWaterPlant(sc, wateringCan, field);
-                case 3 -> handleRefill(player, wateringCan);
-                case 4 -> handleFertilizer(sc, player, field, fertilizerTemplates);
-                case 5 -> handleRemoveHarvest(sc, player, field);
-                case 6 -> handleExcavate(sc, player, field);
-                case 7 -> day = nextDay(day, player, field);
-                case 0 -> running = false;
-                default -> System.out.println("Invalid choice.");
+                case 1:
+                    handlePlantSeed(sc, player, field, plantTemplates);
+                    break;
+
+                case 2:
+                    handleWaterPlant(sc, wateringCan, field);
+                    break;
+
+                case 3:
+                    handleRefill(player, wateringCan);
+                    break;
+
+                case 4:
+                    handleFertilizer(sc, player, field, fertilizerTemplates);
+                    break;
+
+                case 5:
+                    handleRemoveHarvest(sc, player, field);
+                    break;
+
+                case 6:
+                    handleExcavate(sc, player, field);
+                    break;
+
+                case 7:
+                    day = nextDay(day, player, field);
+                    break;
+
+                case 0:
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
             }
         }
 
@@ -292,16 +317,19 @@ public class VerdantSunGame {
         System.out.print("Col (0-9): ");
         int col = readIntSafe(sc);
 
+
+        if (!field.excavateTile(row, col)) {
+            System.out.println("Cannot excavate this tile.");
+            return;
+        }
+
+
         if (!player.deductMoney(500)) {
             System.out.println("Not enough savings.");
             return;
         }
 
-        if (field.excavateTile(row, col)) {
-            System.out.println("Tile excavated.");
-        } else {
-            System.out.println("Cannot excavate this tile.");
-        }
+        System.out.println("Tile excavated.");
     }
 
     // =====================================================
