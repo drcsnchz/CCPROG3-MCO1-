@@ -14,7 +14,7 @@ public class VerdantSunGame {
 
         Player player = new Player(name);
 
-        // FIXED: Load map properly
+
         String[][] layout = DataLoader.loadMap("Map.json");
         Field field = new Field(layout);
 
@@ -37,7 +37,7 @@ public class VerdantSunGame {
         while (running && day <= SEASON_LENGTH) {
 
             displayHeader(day, player, wateringCan);
-            field.displayField(); // FIXED method name
+            field.displayField();
 
             displayMenu();
 
@@ -320,7 +320,7 @@ public class VerdantSunGame {
 
         System.out.println("\nAdvancing to next day...");
 
-        // FIXED: trigger plant growth & fertilizer decay
+
         field.nextDay();
 
         // Daily income
