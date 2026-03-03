@@ -162,7 +162,6 @@ public class DataLoader {
     // =========================================================
     // MAP
     // =========================================================
-
     public static String[][] loadMap(String filename) {
 
         String[][] map = new String[10][10];
@@ -177,9 +176,15 @@ public class DataLoader {
             }
 
             String json = jsonBuilder.toString();
-            json = json.substring(1, json.length() - 1);
 
-            String[] rows = json.split("],\\[");
+            // Extract only the "map" array
+            int mapStart = json.indexOf("\"map\":") + 6;
+            String mapSection = json.substring(mapStart).trim();
+
+            // Remove outer braces
+            mapSection = mapSection.substring(1, mapSection.length() - 2);
+
+            String[] rows = mapSection.split("\\],\\[");
 
             for (int i = 0; i < rows.length; i++) {
 
