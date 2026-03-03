@@ -197,6 +197,16 @@ public class VerdantSunGame {
         }
     }
 
+    private static void handleRefill(Player player, WateringCan can) {
+        if (!player.deductMoney(100)) {
+            System.out.println("Not enough savings to refill.");
+            return;
+        }
+
+        can.refill();
+        System.out.println("Watering can refilled.");
+    }
+
     private static void handleFertilizer(Scanner sc,
                                          Player player,
                                          Field field,
