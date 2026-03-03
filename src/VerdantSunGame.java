@@ -85,7 +85,7 @@ public class VerdantSunGame {
         System.out.println("\n=== SEASON ENDED ===");
         System.out.println("Final Savings: " + player.getSavings());
 
-        // FIXED: Save high score
+
         highScoreManager.addScore(player.getName(),
                 player.getSavings());
 
@@ -100,7 +100,7 @@ public class VerdantSunGame {
         System.out.println("\n=================================");
         System.out.println("Day: " + day + " / " + SEASON_LENGTH);
         System.out.println("Savings: " + player.getSavings());
-        System.out.println("Water Level: " + can.getCurrentWater()); // FIXED
+        System.out.println("Water Level: " + can.getCurrentWater());
         System.out.println("=================================");
     }
 
@@ -339,7 +339,7 @@ public class VerdantSunGame {
 
         System.out.println("\n*** METEORITE EVENT OCCURRED! ***");
 
-        field.applyMeteoriteEvent(); // FIXED
+        field.applyMeteoriteEvent();
     }
 
     // =====================================================
