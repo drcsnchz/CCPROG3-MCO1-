@@ -116,7 +116,7 @@ public class VerdantSunGame {
 
     private static void displayMenu() {
 
-        System.out.println("\n============== MAIN MENU ==============");
+        System.out.println("\n============== MAIN MENU =============");
         System.out.println(" 1. Plant a Seed");
         System.out.println(" 2. Water a Plant");
         System.out.println(" 3. Refill Watering Can (100)");
