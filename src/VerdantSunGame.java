@@ -1,4 +1,3 @@
-import java.util.Map;
 import java.util.Scanner;
 
 public class VerdantSunGame {
@@ -23,11 +22,7 @@ public class VerdantSunGame {
         HighScoreManager highScoreManager =
                 new HighScoreManager("HighScores.json");
 
-        Map<String, Plant> plantTemplates =
-                DataLoader.loadPlants("Plants.json");
 
-        Map<String, Fertilizer> fertilizerTemplates =
-                DataLoader.loadFertilizers("Fertilizers.json");
 
         int day = 1;
         boolean running = true;
@@ -43,7 +38,7 @@ public class VerdantSunGame {
 
             switch (choice) {
                 case 1:
-                    handlePlantSeed(sc, player, field, plantTemplates);
+                    handlePlantSeed(sc, player, field);
                     break;
 
                 case 2:
@@ -55,7 +50,8 @@ public class VerdantSunGame {
                     break;
 
                 case 4:
-                    handleFertilizer(sc, player, field, fertilizerTemplates);
+                    handleFertilizer(sc, player, field,
+                            DataLoader.loadFertilizers("Fertilizers.json"));
                     break;
 
                 case 5:
@@ -133,37 +129,32 @@ public class VerdantSunGame {
     }
 
     // =====================================================
-    // ACTION HANDLERS (Cleaner Feedback)
+    // ACTION HANDLERS
     // =====================================================
 
     private static void handlePlantSeed(Scanner sc,
                                         Player player,
-                                        Field field,
-                                        Map<String, Plant> plantTemplates) {
+                                        Field field) {
+
+
+        Plant[] options = {
+                new Plant("Turnip", 50, 5, 3, 5, "loam"),
+                new Plant("Wheat", 40, 4, 3, 5, "sand")
+        };
 
         System.out.println("\nAvailable Plants:");
 
-        int index = 1;
-        Plant[] options = new Plant[plantTemplates.size()];
-
-        for (Plant p : plantTemplates.values()) {
-            if (player.getSavings() >= p.getSeedPrice()) {
-                System.out.println(index + ". " + p.getName()
-                        + " (" + p.getSeedPrice() + ")");
-                options[index - 1] = p;
-                index++;
+        for (int i = 0; i < options.length; i++) {
+            if (player.getSavings() >= options[i].getSeedPrice()) {
+                System.out.println((i + 1) + ". " + options[i].getName()
+                        + " (" + options[i].getSeedPrice() + ")");
             }
-        }
-
-        if (index == 1) {
-            System.out.println("Not enough money.");
-            return;
         }
 
         System.out.print("Select plant: ");
         int choice = readIntSafe(sc);
 
-        if (choice <= 0 || choice >= index) {
+        if (choice <= 0 || choice > options.length) {
             System.out.println("Invalid selection.");
             return;
         }
@@ -228,7 +219,7 @@ public class VerdantSunGame {
     private static void handleFertilizer(Scanner sc,
                                          Player player,
                                          Field field,
-                                         Map<String, Fertilizer> fertilizerTemplates) {
+                                         java.util.Map<String, Fertilizer> fertilizerTemplates) {
 
         System.out.println("\nAvailable Fertilizers:");
 
@@ -317,12 +308,10 @@ public class VerdantSunGame {
         System.out.print("Col (0-9): ");
         int col = readIntSafe(sc);
 
-
         if (!field.excavateTile(row, col)) {
             System.out.println("Cannot excavate this tile.");
             return;
         }
-
 
         if (!player.deductMoney(500)) {
             System.out.println("Not enough savings.");
