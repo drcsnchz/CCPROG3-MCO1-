@@ -1,8 +1,9 @@
 import java.util.Scanner;
+import java.util.Map;
 
 public class VerdantSunGame {
 
-    private static final int SEASON_LENGTH = 15;
+    private static final int SEASON_LENGTH = 20;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -22,7 +23,8 @@ public class VerdantSunGame {
         HighScoreManager highScoreManager =
                 new HighScoreManager("HighScores.json");
 
-
+        Map<String, Fertilizer> fertilizerTemplates =
+                DataLoader.loadFertilizers("Fertilizers.json");
 
         int day = 1;
         boolean running = true;
@@ -50,8 +52,7 @@ public class VerdantSunGame {
                     break;
 
                 case 4:
-                    handleFertilizer(sc, player, field,
-                            DataLoader.loadFertilizers("Fertilizers.json"));
+                    handleFertilizer(sc, player, field, fertilizerTemplates);
                     break;
 
                 case 5:
@@ -116,7 +117,7 @@ public class VerdantSunGame {
 
     private static void displayMenu() {
 
-        System.out.println("\n============== MAIN MENU =============");
+        System.out.println("\n============== MAIN MENU ==============");
         System.out.println(" 1. Plant a Seed");
         System.out.println(" 2. Water a Plant");
         System.out.println(" 3. Refill Watering Can (100)");
@@ -129,25 +130,28 @@ public class VerdantSunGame {
     }
 
     // =====================================================
-    // ACTION HANDLERS
+    // ACTION HANDLERS (Cleaner Feedback)
     // =====================================================
 
     private static void handlePlantSeed(Scanner sc,
                                         Player player,
                                         Field field) {
 
-
         Plant[] options = {
-                new Plant("Turnip", 50, 5, 3, 5, "loam"),
-                new Plant("Wheat", 40, 4, 3, 5, "sand")
+                new Turnip(),
+                new Wheat(),
+                new Potato(),
+                new Tomato(),
+                new Thyme()
         };
 
         System.out.println("\nAvailable Plants:");
 
         for (int i = 0; i < options.length; i++) {
             if (player.getSavings() >= options[i].getSeedPrice()) {
-                System.out.println((i + 1) + ". " + options[i].getName()
-                        + " (" + options[i].getSeedPrice() + ")");
+                System.out.println((i + 1) + ". " +
+                        options[i].getName() +
+                        " (" + options[i].getSeedPrice() + ")");
             }
         }
 
@@ -159,7 +163,18 @@ public class VerdantSunGame {
             return;
         }
 
-        Plant selected = new Plant(options[choice - 1]);
+        Plant selected;
+
+        switch (choice) {
+            case 1: selected = new Turnip(); break;
+            case 2: selected = new Wheat(); break;
+            case 3: selected = new Potato(); break;
+            case 4: selected = new Tomato(); break;
+            case 5: selected = new Thyme(); break;
+            default:
+                System.out.println("Invalid choice.");
+                return;
+        }
 
         System.out.print("Row (0-9): ");
         int row = readIntSafe(sc);
@@ -219,7 +234,7 @@ public class VerdantSunGame {
     private static void handleFertilizer(Scanner sc,
                                          Player player,
                                          Field field,
-                                         java.util.Map<String, Fertilizer> fertilizerTemplates) {
+                                         Map<String, Fertilizer> fertilizerTemplates) {
 
         System.out.println("\nAvailable Fertilizers:");
 
@@ -334,7 +349,7 @@ public class VerdantSunGame {
         field.nextDay();
         player.addDailyIncome();
 
-        if (currentDay == 7) {
+        if (currentDay == 15) {
             triggerMeteorite(field);
         }
 

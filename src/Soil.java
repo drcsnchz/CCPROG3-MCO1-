@@ -1,11 +1,10 @@
-
 /**
  * Represents a single tile of soil in the field
  *
- * A soil tile may contain:
- * - A plant
- * - A fertilizer
- * - Meteorite damage
+ * Updates:
+ * - Uses stage-based plant system
+ * - Delegates growth to Plant.advanceStage()
+ * - Handles fertilizer reduction rules per stage
  */
 
 public class Soil {
@@ -18,8 +17,6 @@ public class Soil {
 
     /**
      * Constructs a Soil tile with a given soil type
-     *
-     * @param soilType the type of soil (loam, sand, gravel)
      */
     public Soil(String soilType) {
         this.soilType = soilType;
@@ -29,35 +26,36 @@ public class Soil {
         this.meteoriteAffected = false;
     }
 
+    // =====================================================
+    // GETTERS
+    // =====================================================
 
     public String getSoilType() {
         return soilType;
     }
 
-
     public boolean hasPlant() {
         return plant != null;
     }
-
 
     public boolean hasFertilizer() {
         return fertilizer != null;
     }
 
-
     public boolean isMeteoriteAffected() {
         return meteoriteAffected;
     }
 
+    public Plant getPlant() {
+        return plant;
+    }
+
+    // =====================================================
+    // PLANT ACTIONS
+    // =====================================================
+
     /**
      * Plants a seed on this tile
-     *
-     * Pre-condition:
-     * - No existing plant
-     * - Not meteorite affected
-     *
-     * @param plant the plant to place
-     * @return true if planting successful, false otherwise
      */
     public boolean plantSeed(Plant plant) {
         if (this.plant == null && !meteoriteAffected) {
@@ -67,33 +65,31 @@ public class Soil {
         return false;
     }
 
-
     public void removePlant() {
         plant = null;
     }
 
     /**
-     * Harvests the plant if mature
-     *
-     * @return money earned from harvest (0 if not mature or no plant)
+     * Harvests plant if stage allows it
      */
     public int harvestPlant() {
-        if (plant != null && plant.isMature()) {
+        if (plant != null) {
+
             int earnings = plant.harvest();
-            plant = null;
+
+            if (earnings > 0) {
+                plant = null;
+            }
+
             return earnings;
         }
         return 0;
     }
 
-    /**
-     * Applies fertilizer to this tile
-     *
-     * Pre-condition: No fertilizer currently applied
-     *
-     * @param fertilizer fertilizer to apply
-     * @return true if applied successfully, false otherwise
-     */
+    // =====================================================
+    // FERTILIZER
+    // =====================================================
+
     public boolean applyFertilizer(Fertilizer fertilizer) {
         if (this.fertilizer == null) {
             this.fertilizer = fertilizer;
@@ -102,11 +98,10 @@ public class Soil {
         return false;
     }
 
-    /**
-     * Waters the plant on this tile
-     *
-     * @return true if watering successful, false otherwise
-     */
+    // =====================================================
+    // WATERING
+    // =====================================================
+
     public boolean waterPlant() {
         if (plant != null && !plant.isWatered()) {
             plant.water();
@@ -115,31 +110,54 @@ public class Soil {
         return false;
     }
 
+    // =====================================================
+    // NEXT DAY LOGIC (UPDATED)
+    // =====================================================
+
     /**
-     * Processes next-day growth logic for this tile
-     *
-     * - Plant grows only if watered
-     * - Fertilizer decreases only if plant grows
-     * - Watered state resets
+     * Processes next-day behavior for this tile
+     * - Growth depends on plant stage
+     * - Fertilizer decreases differently depending on stage
+     * - Water resets after processing
      */
     public void nextDay() {
 
         if (plant != null) {
 
-            boolean grew = plant.grow(soilType, fertilizer != null);
+            // Get current stage BEFORE advancing
+            GrowthStage stage = plant.getCurrentStage();
 
-            if (grew && fertilizer != null) {
-                fertilizer.decrementEffect();
+            boolean isEnergizing = stage instanceof EnergizingStage;
 
+            // Advance plant stage
+            plant.advanceStage(this);
+
+            // Handle fertilizer reduction
+            if (fertilizer != null) {
+
+                if (isEnergizing) {
+                    // Energizing stage → -2 days
+                    fertilizer.decrementEffect();
+                    fertilizer.decrementEffect();
+                } else {
+                    // Normal → -1 day
+                    fertilizer.decrementEffect();
+                }
+
+                // Remove fertilizer if expired
                 if (fertilizer.isExpired()) {
                     fertilizer = null;
                 }
             }
 
+            // Reset watering state
             plant.resetWatered();
         }
     }
 
+    // =====================================================
+    // METEORITE
+    // =====================================================
 
     public void applyMeteorite() {
         meteoriteAffected = true;
@@ -147,8 +165,7 @@ public class Soil {
     }
 
     /**
-     * Excavates the meteorite damage
-     * Restores soil and permanently fertilizes the tile
+     * Excavates meteorite tile and makes it permanently fertilized
      */
     public void excavate() {
         if (meteoriteAffected) {
@@ -156,7 +173,9 @@ public class Soil {
             soilType = originalSoilType;
 
             // Permanent fertilizer
-            fertilizer = new Fertilizer("Permanent Fertilizer", 0, Integer.MAX_VALUE);
+            fertilizer = new Fertilizer(
+                    "Permanent Fertilizer", 0, Integer.MAX_VALUE
+            );
         }
     }
 }
