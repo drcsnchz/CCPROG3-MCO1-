@@ -145,4 +145,8 @@ public abstract class Plant {
      * @return money earned from harvest
      */
     public abstract int harvest();
+
+    protected boolean canHarvest() {
+        return getCurrentStage().isHarvestable();
+    }
 }
