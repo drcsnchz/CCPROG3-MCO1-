@@ -7,87 +7,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Handles loading and saving game data from JSON files
- * Uses only standard Java API
- */
 public class DataLoader {
-
-    // =========================================================
-    // PLANTS
-    // =========================================================
-
-    public static Map<String, Plant> loadPlants(String filename) {
-
-        Map<String, Plant> plants = new HashMap<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line.trim());
-            }
-
-            String json = jsonBuilder.toString();
-            json = json.substring(1, json.length() - 1);
-
-            String[] entries = json.split("},(?=\")");
-
-            for (String entry : entries) {
-
-                if (!entry.endsWith("}")) {
-                    entry += "}";
-                }
-
-                String[] parts = entry.split(":", 2);
-
-                String key = parts[0].replaceAll("[\"{}]", "").trim();
-                String plantData = parts[1];
-
-                Plant plant = parsePlant(plantData);
-                plants.put(key, plant);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error loading Plants.json");
-        }
-
-        return plants;
-    }
-
-    private static Plant parsePlant(String plantJson) {
-
-        plantJson = plantJson.replaceAll("[{}\"]", "");
-        String[] fields = plantJson.split(",");
-
-        String name = "";
-        int price = 0;
-        int yield = 0;
-        int maxGrowth = 0;
-        String preferredSoil = "";
-        int cropPrice = 0;
-
-        for (String field : fields) {
-
-            String[] keyValue = field.split(":");
-            String key = keyValue[0].trim();
-            String value = keyValue[1].trim();
-
-            switch (key) {
-                case "name": name = value; break;
-                case "price": price = Integer.parseInt(value); break;
-                case "yield": yield = Integer.parseInt(value); break;
-                case "max_growth": maxGrowth = Integer.parseInt(value); break;
-                case "preferred_soil": preferredSoil = value; break;
-                case "crop_price": cropPrice = Integer.parseInt(value); break;
-            }
-        }
-
-        return new Plant(name, price, cropPrice, yield, maxGrowth, preferredSoil);
-    }
-
 
     // =========================================================
     // FERTILIZERS
@@ -158,10 +78,10 @@ public class DataLoader {
         return new Fertilizer(name, price, effectDays);
     }
 
-
     // =========================================================
     // MAP
     // =========================================================
+
     public static String[][] loadMap(String filename) {
 
         String[][] map = new String[10][10];
@@ -177,11 +97,9 @@ public class DataLoader {
 
             String json = jsonBuilder.toString();
 
-            // Extract only the "map" array
             int mapStart = json.indexOf("\"map\":") + 6;
             String mapSection = json.substring(mapStart).trim();
 
-            // Remove outer braces
             mapSection = mapSection.substring(1, mapSection.length() - 2);
 
             String[] rows = mapSection.split("\\],\\[");
@@ -202,7 +120,6 @@ public class DataLoader {
 
         return map;
     }
-
 
     // =========================================================
     // HIGH SCORES
