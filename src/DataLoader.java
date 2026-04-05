@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DataLoader {
 
@@ -79,23 +80,32 @@ public class DataLoader {
     }
 
     // =========================================================
-    // MAP (FIXED VERSION — HARD CODED)
+    // MAP (RANDOMIZED VERSION)
     // =========================================================
 
     public static String[][] loadMap(String filename) {
 
-        return new String[][] {
-                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"},
-                {"loam","sand","loam","loam","sand","sand","loam","loam","sand","loam"},
-                {"loam","loam","loam","sand","sand","sand","sand","loam","loam","loam"},
-                {"loam","sand","loam","sand","sand","sand","sand","loam","sand","loam"},
-                {"loam","sand","loam","sand","sand","sand","sand","loam","sand","loam"},
-                {"loam","loam","loam","sand","sand","sand","sand","loam","loam","loam"},
-                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"},
-                {"loam","sand","loam","loam","sand","sand","loam","loam","sand","loam"},
-                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"},
-                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"}
-        };
+        String[][] map = new String[10][10];
+        Random rand = new Random();
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+
+                int value = rand.nextInt(10);
+
+                if (value < 5) {
+                    map[i][j] = "loam";      // 50%
+                }
+                else if (value < 8) {
+                    map[i][j] = "sand";      // 30%
+                }
+                else {
+                    map[i][j] = "gravel";    // 20%
+                }
+            }
+        }
+
+        return map;
     }
 
     // =========================================================

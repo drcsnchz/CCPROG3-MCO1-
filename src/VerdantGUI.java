@@ -54,6 +54,7 @@ public class VerdantGUI extends JFrame {
 
         for (int r = 0; r < 10; r++) {
             for (int c = 0; c < 10; c++) {
+
                 JButton btn = new JButton(".");
                 btn.setFont(new Font("Arial", Font.BOLD, 14));
                 btn.setFocusPainted(false);
@@ -61,7 +62,6 @@ public class VerdantGUI extends JFrame {
 
                 btn.setOpaque(true);
                 btn.setContentAreaFilled(true);
-                btn.setBorderPainted(true);
 
                 final int row = r, col = c;
                 btn.addActionListener(e -> toggleTile(row, col));
@@ -124,7 +124,13 @@ public class VerdantGUI extends JFrame {
     }
 
     private void showPlantMenu() {
-        String[] options = {"Turnip", "Wheat", "Potato", "Tomato", "Thyme"};
+        String[] options = {
+                new Turnip().getInfo(),
+                new Wheat().getInfo(),
+                new Potato().getInfo(),
+                new Tomato().getInfo(),
+                new Thyme().getInfo()
+        };
 
         int choice = JOptionPane.showOptionDialog(
                 this,
@@ -163,6 +169,10 @@ public class VerdantGUI extends JFrame {
     }
 
     public void update() {
+
+        dayLabel.setText("Day: " + controller.getDay());
+        moneyLabel.setText("Money: " + controller.getPlayer().getSavings());
+
         Field field = controller.getField();
 
         for (int r = 0; r < 10; r++) {
@@ -171,10 +181,13 @@ public class VerdantGUI extends JFrame {
                 Soil soil = field.getSoil(r, c);
                 JButton tile = tiles[r][c];
 
+                tile.setOpaque(true);
+                tile.setContentAreaFilled(true);
+
                 if (soil.isMeteoriteAffected()) {
                     tile.setText("M");
                     tile.setBackground(Color.RED);
-                    tile.setToolTipText("Meteorite Tile");
+                    tile.setToolTipText("Meteorite");
                 }
 
                 else if (soil.hasPlant()) {
@@ -209,10 +222,14 @@ public class VerdantGUI extends JFrame {
                     else if (stage instanceof FullyMatureStage)
                         tile.setBackground(Color.BLACK);
 
-                    String tip = name + " - " + stage.getClass().getSimpleName();
+                    String tip = plant.getName() + " | Soil: " + soil.getSoilType();
+
+                    if (soil.getSoilType().equalsIgnoreCase(plant.getPreferredSoil())) {
+                        tip += " (Preferred)";
+                    }
 
                     if (!plant.isWatered() && stage instanceof SeedlingStage) {
-                        tip += " (Needs Water)";
+                        tip += " | Needs Water";
                     }
 
                     tile.setToolTipText(tip);
@@ -223,13 +240,13 @@ public class VerdantGUI extends JFrame {
                     String soilType = soil.getSoilType();
 
                     if (soilType.equalsIgnoreCase("loam")) {
-                        tile.setBackground(new Color(181, 101, 29));
+                        tile.setBackground(new Color(139, 69, 19));
                     }
                     else if (soilType.equalsIgnoreCase("sand")) {
                         tile.setBackground(Color.YELLOW);
                     }
                     else if (soilType.equalsIgnoreCase("gravel")) {
-                        tile.setBackground(Color.GRAY);
+                        tile.setBackground(Color.LIGHT_GRAY);
                     }
 
                     tile.setText(".");
@@ -237,9 +254,6 @@ public class VerdantGUI extends JFrame {
                 }
             }
         }
-
-        dayLabel.setText("Day: " + controller.getDay());
-        moneyLabel.setText("Money: " + controller.getPlayer().getSavings());
     }
 
     public void showEndScreen(Player player) {
