@@ -1,4 +1,3 @@
-
 /**
  * Represents the 10x10 field of soil tiles
  *
@@ -136,5 +135,9 @@ public class Field {
             }
             System.out.println();
         }
+    }
+
+    private boolean isValid(int r, int c) {
+        return r >= 0 && r < SIZE && c >= 0 && c < SIZE;
     }
 }
