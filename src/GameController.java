@@ -1,3 +1,4 @@
+import javax.swing.JOptionPane;
 import java.awt.Point;
 import java.util.List;
 
@@ -11,10 +12,17 @@ public class GameController {
     private VerdantGUI gui;
 
     public GameController() {
+
+        String name = JOptionPane.showInputDialog(null, "Enter your name:");
+
+        if (name == null || name.trim().isEmpty()) {
+            name = "Player";
+        }
+
         String[][] layout = DataLoader.loadMap("Map.json");
         field = new Field(layout);
 
-        player = new Player("Player");
+        player = new Player(name);
         wateringCan = new WateringCan();
         day = 1;
 
@@ -79,6 +87,7 @@ public class GameController {
     public void nextDay() {
 
         if (day >= 20) {
+            endGame();
             return;
         }
 
@@ -90,7 +99,21 @@ public class GameController {
         }
 
         day++;
+
+        if (day > 20) {
+            endGame();
+            return;
+        }
+
         updateView();
+    }
+
+    private void endGame() {
+
+        HighScoreManager manager = new HighScoreManager("HighScores.json");
+        manager.addScore(player.getName(), player.getSavings());
+
+        gui.showEndScreen(player);
     }
 
     private Plant createPlant(int type) {

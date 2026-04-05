@@ -172,4 +172,16 @@ public class VerdantGUI extends JFrame {
         dayLabel.setText("Day: " + controller.getDay());
         moneyLabel.setText("Money: " + controller.getPlayer().getSavings());
     }
+
+    public void showEndScreen(Player player) {
+
+        String message =
+                "Game Over!\n\n" +
+                        "Player: " + player.getName() + "\n" +
+                        "Final Money: " + player.getSavings();
+
+        JOptionPane.showMessageDialog(this, message);
+
+        System.exit(0);
+    }
 }
