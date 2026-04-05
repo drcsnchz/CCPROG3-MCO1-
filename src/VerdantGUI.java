@@ -38,6 +38,9 @@ public class VerdantGUI extends JFrame {
         dayLabel.setForeground(Color.WHITE);
         moneyLabel.setForeground(Color.WHITE);
 
+        dayLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        moneyLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
         panel.add(dayLabel);
         panel.add(Box.createHorizontalStrut(20));
         panel.add(moneyLabel);
@@ -53,6 +56,9 @@ public class VerdantGUI extends JFrame {
             for (int c = 0; c < 10; c++) {
                 JButton btn = new JButton(".");
                 btn.setBackground(Color.LIGHT_GRAY);
+                btn.setFont(new Font("Arial", Font.BOLD, 14));
+                btn.setFocusPainted(false);
+                btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
                 final int row = r, col = c;
 
@@ -74,6 +80,12 @@ public class VerdantGUI extends JFrame {
         JButton harvest = new JButton("Harvest");
         JButton excavate = new JButton("Excavate");
         JButton nextDay = new JButton("Next Day");
+
+        plant.setFocusPainted(false);
+        water.setFocusPainted(false);
+        harvest.setFocusPainted(false);
+        excavate.setFocusPainted(false);
+        nextDay.setFocusPainted(false);
 
         plant.addActionListener(e -> showPlantMenu());
 
@@ -133,16 +145,16 @@ public class VerdantGUI extends JFrame {
 
         if (selectedTiles.contains(p)) {
             selectedTiles.remove(p);
-            tiles[r][c].setBackground(Color.LIGHT_GRAY);
+            tiles[r][c].setBorder(BorderFactory.createLineBorder(Color.GRAY));
         } else {
             selectedTiles.add(p);
-            tiles[r][c].setBackground(Color.YELLOW);
+            tiles[r][c].setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
         }
     }
 
     private void clearSelection() {
         for (Point p : selectedTiles) {
-            tiles[p.x][p.y].setBackground(Color.LIGHT_GRAY);
+            tiles[p.x][p.y].setBorder(BorderFactory.createLineBorder(Color.GRAY));
         }
         selectedTiles.clear();
     }
@@ -153,18 +165,48 @@ public class VerdantGUI extends JFrame {
         for (int r = 0; r < 10; r++) {
             for (int c = 0; c < 10; c++) {
                 Soil soil = field.getSoil(r, c);
+                JButton tile = tiles[r][c];
 
                 if (soil.isMeteoriteAffected()) {
-                    tiles[r][c].setText("M");
-                    tiles[r][c].setBackground(Color.RED);
-                } else if (soil.hasPlant()) {
-                    tiles[r][c].setText(
-                            soil.getPlant().getName().substring(0, 1)
-                    );
-                    tiles[r][c].setBackground(Color.GREEN);
-                } else {
-                    tiles[r][c].setText(".");
-                    tiles[r][c].setBackground(Color.LIGHT_GRAY);
+                    tile.setText("M");
+                    tile.setBackground(Color.RED);
+                }
+
+                else if (soil.hasPlant()) {
+                    Plant plant = soil.getPlant();
+                    GrowthStage stage = plant.getCurrentStage();
+
+                    String name = plant.getName();
+                    String label;
+
+                    switch (name) {
+                        case "Turnip": label = "TU"; break;
+                        case "Tomato": label = "TO"; break;
+                        case "Thyme": label = "TH"; break;
+                        case "Wheat": label = "WH"; break;
+                        case "Potato": label = "PO"; break;
+                        default: label = name.substring(0, 1);
+                    }
+
+                    tile.setText(label);
+
+                    if (stage instanceof SeedlingStage)
+                        tile.setBackground(Color.GREEN);
+                    else if (stage instanceof DormantStage)
+                        tile.setBackground(Color.BLUE);
+                    else if (stage instanceof EnergizingStage)
+                        tile.setBackground(new Color(128, 0, 128));
+                    else if (stage instanceof LowProductiveStage)
+                        tile.setBackground(Color.ORANGE);
+                    else if (stage instanceof HighProductiveStage)
+                        tile.setBackground(Color.RED);
+                    else if (stage instanceof FullyMatureStage)
+                        tile.setBackground(Color.BLACK);
+                }
+
+                else {
+                    tile.setText(".");
+                    tile.setBackground(Color.LIGHT_GRAY);
                 }
             }
         }
