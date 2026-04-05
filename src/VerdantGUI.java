@@ -59,6 +59,10 @@ public class VerdantGUI extends JFrame {
                 btn.setFocusPainted(false);
                 btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
+                btn.setOpaque(true);
+                btn.setContentAreaFilled(true);
+                btn.setBorderPainted(true);
+
                 final int row = r, col = c;
                 btn.addActionListener(e -> toggleTile(row, col));
 
