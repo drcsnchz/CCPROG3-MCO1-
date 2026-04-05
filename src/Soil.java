@@ -73,8 +73,9 @@ public class Soil {
      * Harvests plant if stage allows it
      */
     public int harvestPlant() {
-        if (plant != null) {
+        if (meteoriteAffected) return 0;
 
+        if (plant != null) {
             int earnings = plant.harvest();
 
             if (earnings > 0) {
@@ -103,6 +104,8 @@ public class Soil {
     // =====================================================
 
     public boolean waterPlant() {
+        if (meteoriteAffected) return false;
+
         if (plant != null && !plant.isWatered()) {
             plant.water();
             return true;
@@ -111,7 +114,7 @@ public class Soil {
     }
 
     // =====================================================
-    // NEXT DAY LOGIC (UPDATED)
+    // NEXT DAY LOGIC
     // =====================================================
 
     /**

@@ -63,10 +63,23 @@ public class Field {
      */
     public void applyMeteoriteEvent() {
 
+        int centerRow = 4;
+        int centerCol = 4;
 
-        for (int row = 3; row <= 6; row++) {
-            for (int col = 3; col <= 6; col++) {
-                grid[row][col].applyMeteorite();
+        int[][] pattern = {
+                {-2, -2}, {-2, 0}, {-2, 2},
+                {-1, -1}, {-1, 0}, {-1, 1},
+                {0, -2}, {0, -1}, {0, 0}, {0, 1}, {0, 2},
+                {1, -1}, {1, 0}, {1, 1},
+                {2, -2}, {2, 0}, {2, 2}
+        };
+
+        for (int[] offset : pattern) {
+            int r = centerRow + offset[0];
+            int c = centerCol + offset[1];
+
+            if (isValid(r, c)) {
+                grid[r][c].applyMeteorite();
             }
         }
     }

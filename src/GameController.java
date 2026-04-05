@@ -62,6 +62,11 @@ public class GameController {
     }
 
     public void nextDay() {
+
+        if (day >= 20) {
+            return;
+        }
+
         field.nextDay();
         player.addDailyIncome();
 
