@@ -79,46 +79,23 @@ public class DataLoader {
     }
 
     // =========================================================
-    // MAP
+    // MAP (FIXED VERSION — HARD CODED)
     // =========================================================
 
     public static String[][] loadMap(String filename) {
 
-        String[][] map = new String[10][10];
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line.trim());
-            }
-
-            String json = jsonBuilder.toString();
-
-            int mapStart = json.indexOf("\"map\":") + 6;
-            String mapSection = json.substring(mapStart).trim();
-
-            mapSection = mapSection.substring(1, mapSection.length() - 2);
-
-            String[] rows = mapSection.split("\\],\\[");
-
-            for (int i = 0; i < rows.length; i++) {
-
-                String row = rows[i].replaceAll("[\\[\\]\"]", "");
-                String[] soils = row.split(",");
-
-                for (int j = 0; j < soils.length; j++) {
-                    map[i][j] = soils[j].trim();
-                }
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error loading Map.json");
-        }
-
-        return map;
+        return new String[][] {
+                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"},
+                {"loam","sand","loam","loam","sand","sand","loam","loam","sand","loam"},
+                {"loam","loam","loam","sand","sand","sand","sand","loam","loam","loam"},
+                {"loam","sand","loam","sand","sand","sand","sand","loam","sand","loam"},
+                {"loam","sand","loam","sand","sand","sand","sand","loam","sand","loam"},
+                {"loam","loam","loam","sand","sand","sand","sand","loam","loam","loam"},
+                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"},
+                {"loam","sand","loam","loam","sand","sand","loam","loam","sand","loam"},
+                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"},
+                {"loam","loam","loam","loam","loam","loam","loam","loam","loam","loam"}
+        };
     }
 
     // =========================================================
