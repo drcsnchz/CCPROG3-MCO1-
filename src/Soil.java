@@ -15,7 +15,7 @@ public class Soil {
     private boolean meteoriteAffected;
     private String originalSoilType;
     private boolean fertilized;
-    private int fertilizerDays;z
+    private int fertilizerDays;
 
     /**
      * Constructs a Soil tile with a given soil type
