@@ -1,4 +1,3 @@
-
 /**
  * Represents the watering can used by the player
  *
@@ -30,7 +29,8 @@ public class WateringCan {
             return false;
         }
 
-        if (soil.waterPlant()) {
+        if (soil.hasPlant()) {
+            soil.getPlant().water();
             currentWater--;
             return true;
         }

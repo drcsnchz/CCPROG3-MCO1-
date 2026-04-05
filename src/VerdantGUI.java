@@ -55,13 +55,11 @@ public class VerdantGUI extends JFrame {
         for (int r = 0; r < 10; r++) {
             for (int c = 0; c < 10; c++) {
                 JButton btn = new JButton(".");
-                btn.setBackground(Color.LIGHT_GRAY);
                 btn.setFont(new Font("Arial", Font.BOLD, 14));
                 btn.setFocusPainted(false);
                 btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
                 final int row = r, col = c;
-
                 btn.addActionListener(e -> toggleTile(row, col));
 
                 tiles[r][c] = btn;
@@ -77,20 +75,20 @@ public class VerdantGUI extends JFrame {
 
         JButton plant = new JButton("Plant");
         JButton water = new JButton("Water");
+        JButton fertilize = new JButton("Fertilize");
         JButton harvest = new JButton("Harvest");
         JButton excavate = new JButton("Excavate");
         JButton nextDay = new JButton("Next Day");
-
-        plant.setFocusPainted(false);
-        water.setFocusPainted(false);
-        harvest.setFocusPainted(false);
-        excavate.setFocusPainted(false);
-        nextDay.setFocusPainted(false);
 
         plant.addActionListener(e -> showPlantMenu());
 
         water.addActionListener(e -> {
             controller.water(selectedTiles);
+            clearSelection();
+        });
+
+        fertilize.addActionListener(e -> {
+            controller.fertilize(selectedTiles);
             clearSelection();
         });
 
@@ -113,6 +111,7 @@ public class VerdantGUI extends JFrame {
 
         panel.add(plant);
         panel.add(water);
+        panel.add(fertilize);
         panel.add(harvest);
         panel.add(excavate);
         panel.add(nextDay);
@@ -164,15 +163,18 @@ public class VerdantGUI extends JFrame {
 
         for (int r = 0; r < 10; r++) {
             for (int c = 0; c < 10; c++) {
+
                 Soil soil = field.getSoil(r, c);
                 JButton tile = tiles[r][c];
 
                 if (soil.isMeteoriteAffected()) {
                     tile.setText("M");
                     tile.setBackground(Color.RED);
+                    tile.setToolTipText("Meteorite Tile");
                 }
 
                 else if (soil.hasPlant()) {
+
                     Plant plant = soil.getPlant();
                     GrowthStage stage = plant.getCurrentStage();
 
@@ -202,11 +204,32 @@ public class VerdantGUI extends JFrame {
                         tile.setBackground(Color.RED);
                     else if (stage instanceof FullyMatureStage)
                         tile.setBackground(Color.BLACK);
+
+                    String tip = name + " - " + stage.getClass().getSimpleName();
+
+                    if (!plant.isWatered() && stage instanceof SeedlingStage) {
+                        tip += " (Needs Water)";
+                    }
+
+                    tile.setToolTipText(tip);
                 }
 
                 else {
+
+                    String soilType = soil.getSoilType();
+
+                    if (soilType.equalsIgnoreCase("loam")) {
+                        tile.setBackground(new Color(181, 101, 29));
+                    }
+                    else if (soilType.equalsIgnoreCase("sand")) {
+                        tile.setBackground(Color.YELLOW);
+                    }
+                    else if (soilType.equalsIgnoreCase("gravel")) {
+                        tile.setBackground(Color.GRAY);
+                    }
+
                     tile.setText(".");
-                    tile.setBackground(Color.LIGHT_GRAY);
+                    tile.setToolTipText("Soil: " + soilType);
                 }
             }
         }

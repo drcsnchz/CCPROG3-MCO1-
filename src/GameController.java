@@ -44,8 +44,8 @@ public class GameController {
 
             Plant plant = createPlant(plantType);
 
-            if (player.deductMoney(plant.getSeedPrice())) {
-                soil.plantSeed(plant);
+            if (plant != null && player.deductMoney(plant.getSeedPrice())) {
+                soil.setPlant(plant);
             }
         }
         updateView();
@@ -59,11 +59,36 @@ public class GameController {
         updateView();
     }
 
+    public void fertilize(List<Point> tiles) {
+        for (Point p : tiles) {
+            Soil soil = field.getSoil(p.x, p.y);
+
+            if (!soil.isMeteoriteAffected()) {
+
+                Fertilizer fertilizer = new Fertilizer("Basic Fertilizer", 100, 3);
+
+                if (player.deductMoney(fertilizer.getPrice())) {
+                    soil.applyFertilizer(fertilizer);
+                }
+            }
+        }
+        updateView();
+    }
+
     public void harvest(List<Point> tiles) {
         for (Point p : tiles) {
             Soil soil = field.getSoil(p.x, p.y);
-            int earnings = soil.harvestPlant();
-            player.addMoney(earnings);
+
+            if (soil.hasPlant()) {
+                Plant plant = soil.getPlant();
+                int earnings = plant.harvest();
+
+                if (earnings > 0) {
+                    player.addMoney(earnings);
+                }
+
+                soil.removePlant();
+            }
         }
         updateView();
     }
@@ -93,6 +118,7 @@ public class GameController {
 
         field.nextDay();
         player.addDailyIncome();
+        wateringCan.refill();
 
         if (day == 15) {
             field.applyMeteoriteEvent();
