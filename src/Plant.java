@@ -81,6 +81,13 @@ public abstract class Plant {
         return lifecycle[currentStageIndex];
     }
 
+    /**
+     * Returns the current stage index
+     */
+    public int getStageIndex() {
+        return currentStageIndex;
+    }
+
     // =====================================================
     // WATERING
     // =====================================================
