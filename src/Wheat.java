@@ -2,17 +2,39 @@ public class Wheat extends Plant {
 
     public Wheat() {
         this.name = "Wheat";
-        this.seedPrice = 40;
+        this.seedPrice = 10;
         this.cropPrice = 4;
-        this.yield = 3;
-        this.preferredSoil = "sand";
+        this.yield = 1;
+        this.preferredSoil = "clay";
 
         this.lifecycle = new GrowthStage[] {
                 new SeedlingStage(),
-                new DormantStage(),
-                new EnergizingStage(),
+
                 new LowProductiveStage(),
+                new LowProductiveStage(),
+                new LowProductiveStage(),
+                new LowProductiveStage(),
+                new LowProductiveStage(),
+                new LowProductiveStage(),
+
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+
                 new HighProductiveStage(),
+                new HighProductiveStage(),
+
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+
+                new HighProductiveStage(),
+                new HighProductiveStage(),
+
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+
                 new FullyMatureStage()
         };
 
@@ -21,17 +43,9 @@ public class Wheat extends Plant {
 
     @Override
     public int harvest() {
-        GrowthStage stage = getCurrentStage();
 
-        if (stage instanceof LowProductiveStage) {
-            return yield * cropPrice;
-        }
+        if (!canHarvest()) return 0;
 
-        if (stage instanceof HighProductiveStage ||
-                stage instanceof FullyMatureStage) {
-            return yield * 2 * cropPrice;
-        }
-
-        return 0;
+        return yield * cropPrice;
     }
 }

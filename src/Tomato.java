@@ -2,17 +2,37 @@ public class Tomato extends Plant {
 
     public Tomato() {
         this.name = "Tomato";
-        this.seedPrice = 70;
+        this.seedPrice = 20;
         this.cropPrice = 5;
-        this.yield = 3;
-        this.preferredSoil = "sand";
+        this.yield = 2;
+        this.preferredSoil = "loam";
 
         this.lifecycle = new GrowthStage[] {
                 new SeedlingStage(),
+
                 new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+                new DormantStage(),
+
                 new EnergizingStage(),
-                new LowProductiveStage(),
-                new HighProductiveStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+                new EnergizingStage(),
+
                 new FullyMatureStage()
         };
 
@@ -21,17 +41,9 @@ public class Tomato extends Plant {
 
     @Override
     public int harvest() {
-        GrowthStage stage = getCurrentStage();
 
-        if (stage instanceof LowProductiveStage) {
-            return yield * cropPrice;
-        }
+        if (!canHarvest()) return 0;
 
-        if (stage instanceof HighProductiveStage ||
-                stage instanceof FullyMatureStage) {
-            return yield * 2 * cropPrice;
-        }
-
-        return 0;
+        return yield * cropPrice;
     }
 }

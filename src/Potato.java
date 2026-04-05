@@ -2,17 +2,50 @@ public class Potato extends Plant {
 
     public Potato() {
         this.name = "Potato";
-        this.seedPrice = 60;
-        this.cropPrice = 8; // base for large potato
-        this.yield = 3;
-        this.preferredSoil = "loam";
+        this.seedPrice = 15;
+        this.cropPrice = 4;
+        this.yield = 2;
+        this.preferredSoil = "clay";
 
         this.lifecycle = new GrowthStage[] {
                 new SeedlingStage(),
-                new DormantStage(),
+                new SeedlingStage(),
+                new SeedlingStage(),
+                new SeedlingStage(),
+                new SeedlingStage(),
+
                 new EnergizingStage(),
+                new DormantStage(),
                 new LowProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
+                new LowProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
+                new LowProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
+                new LowProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
                 new HighProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
+                new HighProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
+                new HighProductiveStage(),
+
+                new EnergizingStage(),
+                new DormantStage(),
+                new HighProductiveStage(),
+
                 new FullyMatureStage()
         };
 
@@ -21,21 +54,18 @@ public class Potato extends Plant {
 
     @Override
     public int harvest() {
+
+        if (!canHarvest()) return 0;
+
         GrowthStage stage = getCurrentStage();
 
-        // LOW → small potatoes (4 gold)
         if (stage instanceof LowProductiveStage) {
-            return yield * 4;
-        }
-
-        // HIGH → large potatoes +50%
-        if (stage instanceof HighProductiveStage) {
-            return (int)(yield * cropPrice * 1.5);
-        }
-
-        // FULLY MATURE → no bonus
-        if (stage instanceof FullyMatureStage) {
             return yield * cropPrice;
+        }
+
+        if (stage instanceof HighProductiveStage ||
+                stage instanceof FullyMatureStage) {
+            return yield * 8;
         }
 
         return 0;
