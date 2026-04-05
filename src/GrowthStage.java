@@ -1,4 +1,4 @@
-public class GrowthStage {
+public interface GrowthStage {
 
     boolean canAdvance(boolean isWatered);
 
