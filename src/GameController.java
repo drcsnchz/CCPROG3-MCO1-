@@ -23,7 +23,6 @@ public class GameController {
         updateView();
     }
 
-
     public Field getField() { return field; }
     public Player getPlayer() { return player; }
     public int getDay() { return day; }
@@ -58,6 +57,22 @@ public class GameController {
             int earnings = soil.harvestPlant();
             player.addMoney(earnings);
         }
+        updateView();
+    }
+
+    public void excavate(int row, int col) {
+
+        int cost = 500;
+
+        if (player.getSavings() >= cost) {
+
+            boolean success = field.excavateTile(row, col);
+
+            if (success) {
+                player.deductMoney(cost);
+            }
+        }
+
         updateView();
     }
 

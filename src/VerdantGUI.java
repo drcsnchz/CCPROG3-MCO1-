@@ -72,17 +72,28 @@ public class VerdantGUI extends JFrame {
         JButton plant = new JButton("Plant");
         JButton water = new JButton("Water");
         JButton harvest = new JButton("Harvest");
+        JButton excavate = new JButton("Excavate");
         JButton nextDay = new JButton("Next Day");
 
         plant.addActionListener(e -> showPlantMenu());
+
         water.addActionListener(e -> {
             controller.water(selectedTiles);
             clearSelection();
         });
+
         harvest.addActionListener(e -> {
             controller.harvest(selectedTiles);
             clearSelection();
         });
+
+        excavate.addActionListener(e -> {
+            for (Point p : selectedTiles) {
+                controller.excavate(p.x, p.y);
+            }
+            clearSelection();
+        });
+
         nextDay.addActionListener(e -> {
             controller.nextDay();
             clearSelection();
@@ -91,6 +102,7 @@ public class VerdantGUI extends JFrame {
         panel.add(plant);
         panel.add(water);
         panel.add(harvest);
+        panel.add(excavate);
         panel.add(nextDay);
 
         add(panel, BorderLayout.SOUTH);
@@ -134,7 +146,6 @@ public class VerdantGUI extends JFrame {
         }
         selectedTiles.clear();
     }
-
 
     public void update() {
         Field field = controller.getField();

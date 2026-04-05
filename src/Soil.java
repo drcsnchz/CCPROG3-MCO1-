@@ -14,6 +14,8 @@ public class Soil {
     private Fertilizer fertilizer;
     private boolean meteoriteAffected;
     private String originalSoilType;
+    private boolean fertilized;
+    private int fertilizerDays;
 
     /**
      * Constructs a Soil tile with a given soil type
@@ -171,14 +173,8 @@ public class Soil {
      * Excavates meteorite tile and makes it permanently fertilized
      */
     public void excavate() {
-        if (meteoriteAffected) {
-            meteoriteAffected = false;
-            soilType = originalSoilType;
-
-            // Permanent fertilizer
-            fertilizer = new Fertilizer(
-                    "Permanent Fertilizer", 0, Integer.MAX_VALUE
-            );
-        }
+        meteoriteAffected = false;
+        fertilized = true;
+        fertilizerDays = -1;
     }
 }
