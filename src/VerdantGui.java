@@ -135,6 +135,7 @@ public class VerdantGUI extends JFrame {
         selectedTiles.clear();
     }
 
+
     public void update() {
         Field field = controller.getField();
 

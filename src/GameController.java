@@ -23,6 +23,7 @@ public class GameController {
         updateView();
     }
 
+
     public Field getField() { return field; }
     public Player getPlayer() { return player; }
     public int getDay() { return day; }
