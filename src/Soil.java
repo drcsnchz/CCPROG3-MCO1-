@@ -1,13 +1,3 @@
-/**
- * Represents a soil tile in the field
- *
- * A soil tile contains:
- * - A type (loam, sand, gravel)
- * - A plant (optional)
- * - A fertilizer (optional)
- * - Meteorite state
- */
-
 public class Soil {
 
     private String soilType;
@@ -48,10 +38,20 @@ public class Soil {
         return fertilizer != null || isMeteorite;
     }
 
-    public void applyFertilizer(Fertilizer f) {
-        if (fertilizer == null && !isMeteorite) {
-            fertilizer = new Fertilizer(f);
+    public boolean applyFertilizer(Fertilizer f) {
+        if (fertilizer == null) {
+            fertilizer = f;
+            return true;
         }
+        return false;
+    }
+
+    public boolean waterPlant() {
+        if (plant != null) {
+            plant.water();
+            return true;
+        }
+        return false;
     }
 
     public boolean isMeteoriteAffected() {
@@ -72,21 +72,10 @@ public class Soil {
 
         if (plant != null) {
 
-            int before = plant.getStageIndex();
-
             plant.advanceStage(this);
 
-            int after = plant.getStageIndex();
-
-            boolean grew = after > before;
-
-            if (grew && fertilizer != null && !isMeteorite) {
-
+            if (fertilizer != null && !isMeteorite) {
                 fertilizer.decrementEffect();
-
-                if (plant.getCurrentStage() instanceof EnergizingStage) {
-                    fertilizer.decrementEffect();
-                }
 
                 if (fertilizer.isExpired()) {
                     fertilizer = null;

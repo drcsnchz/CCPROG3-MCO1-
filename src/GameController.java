@@ -11,9 +11,9 @@ public class GameController {
 
     private VerdantGUI gui;
 
-    public GameController() {
+    private boolean gameEnded;
 
-        String name = JOptionPane.showInputDialog(null, "Enter your name:");
+    public GameController(String name) {
 
         if (name == null || name.trim().isEmpty()) {
             name = "Player";
@@ -26,6 +26,8 @@ public class GameController {
         wateringCan = new WateringCan();
         day = 1;
 
+        gameEnded = false;
+
         gui = new VerdantGUI(this);
 
         updateView();
@@ -36,7 +38,13 @@ public class GameController {
     public int getDay() { return day; }
     public WateringCan getWateringCan() { return wateringCan; }
 
+    // =========================
+    // ACTIONS (BLOCK AFTER END)
+    // =========================
+
     public void plant(List<Point> tiles, int plantType) {
+        if (gameEnded) return;
+
         for (Point p : tiles) {
             Soil soil = field.getSoil(p.x, p.y);
 
@@ -44,7 +52,7 @@ public class GameController {
 
             Plant plant = createPlant(plantType);
 
-            if (plant != null && player.deductMoney(plant.getSeedPrice())) {
+            if (player.deductMoney(plant.getSeedPrice())) {
                 soil.setPlant(plant);
             }
         }
@@ -52,6 +60,8 @@ public class GameController {
     }
 
     public void water(List<Point> tiles) {
+        if (gameEnded) return;
+
         for (Point p : tiles) {
             Soil soil = field.getSoil(p.x, p.y);
             wateringCan.water(soil);
@@ -59,66 +69,67 @@ public class GameController {
         updateView();
     }
 
-    public void fertilize(List<Point> tiles) {
+    public void harvest(List<Point> tiles) {
+        if (gameEnded) return;
+
         for (Point p : tiles) {
             Soil soil = field.getSoil(p.x, p.y);
 
-            if (!soil.isMeteoriteAffected()) {
+            if (!soil.hasPlant() || soil.isMeteoriteAffected()) continue;
 
-                Fertilizer fertilizer = new Fertilizer("Basic Fertilizer", 100, 3);
-
-                if (player.deductMoney(fertilizer.getPrice())) {
-                    soil.applyFertilizer(fertilizer);
-                }
-            }
+            int earnings = soil.getPlant().harvest();
+            player.addMoney(earnings);
+            soil.removePlant();
         }
         updateView();
     }
 
-    public void harvest(List<Point> tiles) {
+    public void fertilize(List<Point> tiles) {
+        if (gameEnded) return;
+
         for (Point p : tiles) {
             Soil soil = field.getSoil(p.x, p.y);
 
-            if (soil.hasPlant()) {
-                Plant plant = soil.getPlant();
-                int earnings = plant.harvest();
+            if (soil.isMeteoriteAffected()) continue;
 
-                if (earnings > 0) {
-                    player.addMoney(earnings);
+            Fertilizer f = new Fertilizer("Basic", 100, 3);
+
+            if (player.getSavings() >= f.getPrice()) {
+                if (soil.applyFertilizer(new Fertilizer(f))) {
+                    player.deductMoney(f.getPrice());
                 }
-
-                soil.removePlant();
             }
         }
         updateView();
     }
 
     public void excavate(int row, int col) {
+        if (gameEnded) return;
 
         int cost = 500;
 
+        Soil soil = field.getSoil(row, col);
+
+        if (!soil.isMeteoriteAffected()) return;
+
         if (player.getSavings() >= cost) {
-
-            boolean success = field.excavateTile(row, col);
-
-            if (success) {
-                player.deductMoney(cost);
-            }
+            soil.excavate();
+            player.deductMoney(cost);
         }
 
         updateView();
     }
 
+    // =========================
+    // DAY PROGRESSION (FIXED)
+    // =========================
+
     public void nextDay() {
 
-        if (day >= 20) {
-            endGame();
-            return;
-        }
+        if (gameEnded) return;
 
         field.nextDay();
         player.addDailyIncome();
-        wateringCan.refill();
 
         if (day == 15) {
             field.applyMeteoriteEvent();
@@ -126,30 +137,42 @@ public class GameController {
 
         day++;
 
+
         if (day > 20) {
             endGame();
             return;
         }
 
+        wateringCan.refill();
         updateView();
     }
 
+    // =========================
+    // END GAME
+    // =========================
+
     private void endGame() {
+
+        if (gameEnded) return;
+        gameEnded = true;
 
         HighScoreManager manager = new HighScoreManager("HighScores.json");
         manager.addScore(player.getName(), player.getSavings());
 
-        gui.showEndScreen(player);
+        // 👉 SHOW END SCREEN
+        new EndScreen(player, manager.getScores());
+
+        gui.dispose(); // close game window
     }
 
+    // =========================
+
     private Plant createPlant(int type) {
-        switch (type) {
-            case 1: return new Turnip();
-            case 2: return new Wheat();
-            case 3: return new Potato();
-            case 4: return new Tomato();
-            case 5: return new Thyme();
-        }
+        if (type == 1) return new Turnip();
+        if (type == 2) return new Wheat();
+        if (type == 3) return new Potato();
+        if (type == 4) return new Tomato();
+        if (type == 5) return new Thyme();
         return null;
     }
 

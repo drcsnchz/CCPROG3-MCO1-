@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,22 +24,57 @@ public class HighScoreManager {
      */
     public HighScoreManager(String filename) {
         this.filename = filename;
-        this.scores = DataLoader.loadHighScores(filename);
+
+        scores = DataLoader.loadHighScores(filename);
+
+        // Safety: if file is empty or failed to load
+        if (scores == null) {
+            scores = new ArrayList<HighScoreEntry>();
+        }
+
+        sortScores();
     }
 
     /**
      * Adds a new score and updates the leaderboard
+     *
+     * Rules:
+     * - Only top 10 scores are kept
+     * - If new score is lower than the lowest (and already 10 entries), it is not added
      *
      * @param playerName the player's name
      * @param finalSavings the player's final savings
      */
     public void addScore(String playerName, int finalSavings) {
 
-        scores.add(new HighScoreEntry(playerName, finalSavings));
+        HighScoreEntry newEntry = new HighScoreEntry(playerName, finalSavings);
 
+        // Case 1: Less than 10 scores → always add
+        if (scores.size() < 10) {
+            scores.add(newEntry);
+        }
+        else {
+            // Make sure list is sorted first
+            sortScores();
+
+            // Get lowest score (last element)
+            HighScoreEntry lowest = scores.get(scores.size() - 1);
+
+            // Only add if better than lowest
+            if (finalSavings > lowest.getFinalSavings()) {
+                scores.remove(scores.size() - 1);
+                scores.add(newEntry);
+            }
+            else {
+                // Not good enough → do nothing
+                return;
+            }
+        }
+
+        // Re-sort after adding
         sortScores();
-        keepTop10();
 
+        // Save updated leaderboard
         DataLoader.saveHighScores(filename, scores);
     }
 
@@ -51,15 +87,6 @@ public class HighScoreManager {
                 return Integer.compare(b.getFinalSavings(), a.getFinalSavings());
             }
         });
-    }
-
-    /**
-     * Keeps only the top 10 scores
-     */
-    private void keepTop10() {
-        if (scores.size() > 10) {
-            scores = scores.subList(0, 10);
-        }
     }
 
     /**

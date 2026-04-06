@@ -1,3 +1,12 @@
+/**
+ * Abstract base class for all plants in the Verdant Sun simulator
+ * Instead, they progress through a sequence of GrowthStage objects
+ *
+ * Each subclass defines:
+ * - its lifecycle
+ * - its own harvest behavior
+ */
+
 public abstract class Plant {
 
     protected String name;
@@ -11,11 +20,19 @@ public abstract class Plant {
     protected GrowthStage[] lifecycle;
     protected int currentStageIndex;
 
+    /**
+     * Default constructor
+     * Initializes plant as not watered and at first stage
+     */
     public Plant() {
         this.watered = false;
         this.currentStageIndex = 0;
     }
 
+    /**
+     * Copy constructor
+     * Ensures planted instances have independent state
+     */
     public Plant(Plant other) {
         this.name = other.name;
         this.seedPrice = other.seedPrice;
@@ -91,11 +108,56 @@ public abstract class Plant {
         }
     }
 
+    /**
+     * Determines if the plant can be harvested based on its stage
+     */
+    public boolean canHarvest() {
+
+        GrowthStage stage = getCurrentStage();
+
+        return (stage instanceof LowProductiveStage ||
+                stage instanceof HighProductiveStage ||
+                stage instanceof FullyMatureStage);
+    }
+
+    /**
+     * Computes earnings based on stage multipliers
+     */
+    protected int computeHarvestValue() {
+
+        GrowthStage stage = getCurrentStage();
+
+        if (stage instanceof LowProductiveStage) {
+            return yield * cropPrice;
+        }
+        else if (stage instanceof HighProductiveStage) {
+            return (yield * 2) * cropPrice;
+        }
+        else if (stage instanceof FullyMatureStage) {
+            return (yield * 2) * cropPrice;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Provides display info for UI
+     */
     public String getInfo() {
         return name + " | Prefers: " + preferredSoil +
                 " | Seed: " + seedPrice +
                 " | Sell: " + cropPrice;
     }
 
-    public abstract int harvest();
+    /**
+     * Harvest behavior (shared logic)
+     */
+    public int harvest() {
+
+        if (!canHarvest()) {
+            return 0;
+        }
+
+        return computeHarvestValue();
+    }
 }
