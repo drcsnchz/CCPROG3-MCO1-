@@ -25,7 +25,7 @@ public class Fertilizer {
     }
 
     /**
-     * Copy constructor (used when applying fertilizer to soil).
+     * Copy constructor (used when applying fertilizer to soil)
      *
      * @param other the fertilizer template to copy
      */
@@ -48,7 +48,7 @@ public class Fertilizer {
     }
 
     /**
-     * Decreases effect days by 1.
+     * Decreases effect days by 1
      *
      * Pre-condition: effectDays must be greater than 0
      * Post-condition: effectDays decreases by 1

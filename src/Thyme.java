@@ -1,3 +1,12 @@
+/**
+ * Represents the Thyme plant
+ *
+ * - Long seedling phase
+ * - Simple lifecycle
+ * - Stable harvest output
+ */
+
+
 public class Thyme extends Plant {
 
     public Thyme() {

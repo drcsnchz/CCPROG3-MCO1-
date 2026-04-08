@@ -1,3 +1,10 @@
+/**
+ * Represents the Wheat plant
+ *
+ * - Moderate growth cycle
+ * - Produces consistent yield across productive stages
+ */
+
 public class Wheat extends Plant {
 
     public Wheat() {

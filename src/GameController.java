@@ -2,6 +2,16 @@ import javax.swing.JOptionPane;
 import java.awt.Point;
 import java.util.List;
 
+
+/**
+ * Controls the overall game flow and logic
+ *
+ * The GameController:
+ * - Manages player actions (plant, water, harvest, etc.)
+ * - Handles day progression
+ * - Coordinates between the field, player, and GUI
+ */
+
 public class GameController {
 
     private Field field;

@@ -2,87 +2,30 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Utility class for loading and saving game data
+ *
+ * This class handles:
+ * - Generating the map layout
+ * - Loading and saving high scores
+ *
+ */
 public class DataLoader {
-
-    // =========================================================
-    // FERTILIZERS
-    // =========================================================
-
-    public static Map<String, Fertilizer> loadFertilizers(String filename) {
-
-        Map<String, Fertilizer> fertilizers = new HashMap<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-
-            StringBuilder jsonBuilder = new StringBuilder();
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                jsonBuilder.append(line.trim());
-            }
-
-            String json = jsonBuilder.toString();
-            json = json.substring(1, json.length() - 1);
-
-            String[] entries = json.split("},(?=\")");
-
-            for (String entry : entries) {
-
-                if (!entry.endsWith("}")) {
-                    entry += "}";
-                }
-
-                String[] parts = entry.split(":", 2);
-
-                String key = parts[0].replaceAll("[\"{}]", "").trim();
-                String fertilizerData = parts[1];
-
-                Fertilizer fertilizer = parseFertilizer(fertilizerData);
-                fertilizers.put(key, fertilizer);
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error loading Fertilizers.json");
-        }
-
-        return fertilizers;
-    }
-
-    private static Fertilizer parseFertilizer(String fertilizerJson) {
-
-        fertilizerJson = fertilizerJson.replaceAll("[{}\"]", "");
-        String[] fields = fertilizerJson.split(",");
-
-        String name = "";
-        int price = 0;
-        int effectDays = 0;
-
-        for (String field : fields) {
-
-            String[] keyValue = field.split(":");
-            String key = keyValue[0].trim();
-            String value = keyValue[1].trim();
-
-            switch (key) {
-                case "name": name = value; break;
-                case "price": price = Integer.parseInt(value); break;
-                case "effect_days": effectDays = Integer.parseInt(value); break;
-            }
-        }
-
-        return new Fertilizer(name, price, effectDays);
-    }
 
     // =========================================================
     // MAP (RANDOMIZED VERSION)
     // =========================================================
 
+    /**
+     * Generates a randomized 10x10 map of soil types
+     *
+     * @param filename unused parameter
+     * @return 2D array representing soil types
+     */
     public static String[][] loadMap(String filename) {
 
         String[][] map = new String[10][10];
@@ -112,6 +55,12 @@ public class DataLoader {
     // HIGH SCORES
     // =========================================================
 
+    /**
+     * Loads high scores from a JSON file
+     *
+     * @param filename file path of the high score JSON
+     * @return list of high score entries
+     */
     public static List<HighScoreEntry> loadHighScores(String filename) {
 
         List<HighScoreEntry> scores = new ArrayList<>();
@@ -164,6 +113,12 @@ public class DataLoader {
         return scores;
     }
 
+    /**
+     * Saves high scores to a JSON file
+     *
+     * @param filename file path of the high score JSON
+     * @param scores list of high score entries
+     */
     public static void saveHighScores(String filename, List<HighScoreEntry> scores) {
 
         try (FileWriter writer = new FileWriter(filename)) {

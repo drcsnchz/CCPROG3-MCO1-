@@ -4,6 +4,18 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 
+
+/**
+ * Graphical user interface for the game
+ *
+ * Displays:
+ * - The field grid
+ * - Player information
+ * - Game controls (plant, water, harvest, etc.)
+ *
+ * Handles user interaction with tiles and actions as well
+ */
+
 public class VerdantGUI extends JFrame {
 
     private GameController controller;

@@ -1,12 +1,12 @@
 /**
- * Abstract base class for all plants in the Verdant Sun simulator
- * Instead, they progress through a sequence of GrowthStage objects
+ * Abstract base class representing a plant in the game
  *
- * Each subclass defines:
- * - its lifecycle
- * - its own harvest behavior
+ * A plant:
+ * - Has a lifecycle consisting of multiple growth stages
+ * - Can be watered and progress through stages
+ * - Produces crops depending on its current stage
+ *
  */
-
 public abstract class Plant {
 
     protected String name;
@@ -21,8 +21,7 @@ public abstract class Plant {
     protected int currentStageIndex;
 
     /**
-     * Default constructor
-     * Initializes plant as not watered and at first stage
+     * Initializes the plant at the first stage and not watered.
      */
     public Plant() {
         this.watered = false;
@@ -31,7 +30,8 @@ public abstract class Plant {
 
     /**
      * Copy constructor
-     * Ensures planted instances have independent state
+     *
+     * @param other the plant to copy
      */
     public Plant(Plant other) {
         this.name = other.name;
@@ -45,48 +45,98 @@ public abstract class Plant {
         this.watered = false;
     }
 
+    /**
+     * Gets the plant name
+     *
+     * @return plant name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the seed price
+     *
+     * @return seed price
+     */
     public int getSeedPrice() {
         return seedPrice;
     }
 
+    /**
+     * Gets the crop price
+     * @return crop price
+     */
     public int getCropPrice() {
         return cropPrice;
     }
 
+    /**
+     * Gets the yield of the plant
+     *
+     * @return yield amount
+     */
     public int getYield() {
         return yield;
     }
 
+    /**
+     * Gets the preferred soil type
+     *
+     * @return preferred soil
+     */
     public String getPreferredSoil() {
         return preferredSoil;
     }
 
+    /**
+     * Checks if the plant is wateref
+     *
+     * @return true if watered, false otherwise
+     */
     public boolean isWatered() {
         return watered;
     }
 
+    /**
+     * Gets the current growth stage
+     *
+     * @return current GrowthStage
+     */
     public GrowthStage getCurrentStage() {
         return lifecycle[currentStageIndex];
     }
 
+    /**
+     * Gets the current stage index
+     *
+     * @return stage index
+     */
     public int getStageIndex() {
         return currentStageIndex;
     }
 
+    /**
+     * Waters the plant
+     */
     public void water() {
         if (!watered) {
             watered = true;
         }
     }
 
+    /**
+     * Resets watered status at the end of the day
+     */
     public void resetWatered() {
         watered = false;
     }
 
+    /**
+     * Advances the plant's growth stage
+     *
+     * @param soil the soil the plant is planted in
+     */
     public void advanceStage(Soil soil) {
 
         GrowthStage stage = getCurrentStage();
@@ -109,7 +159,9 @@ public abstract class Plant {
     }
 
     /**
-     * Determines if the plant can be harvested based on its stage
+     * Checks if the plant can be harvested
+     *
+     * @return true if harvestable, false otherwise
      */
     public boolean canHarvest() {
 
@@ -121,7 +173,9 @@ public abstract class Plant {
     }
 
     /**
-     * Computes earnings based on stage multipliers
+     * Computes the harvest value based on the current stage
+     *
+     * @return harvest value
      */
     protected int computeHarvestValue() {
 
@@ -141,7 +195,9 @@ public abstract class Plant {
     }
 
     /**
-     * Provides display info for UI
+     * Gets display information about the plant
+     *
+     * @return formatted plant info string
      */
     public String getInfo() {
         return name + " | Prefers: " + preferredSoil +
@@ -150,7 +206,9 @@ public abstract class Plant {
     }
 
     /**
-     * Harvest behavior (shared logic)
+     * Harvests the plant
+     *
+     * @return earnings from harvest
      */
     public int harvest() {
 

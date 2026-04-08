@@ -1,3 +1,11 @@
+/**
+ * Represents the Turnip plant
+ *
+ * - Low seed cost
+ * - Multiple productive stages
+ * - Special harvest behavior depending on stage
+ */
+
 public class Turnip extends Plant {
 
     public Turnip() {

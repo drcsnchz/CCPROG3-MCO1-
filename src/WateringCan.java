@@ -1,10 +1,11 @@
 /**
  * Represents the watering can used by the player
  *
- * The watering can has limited water per day
+ * The watering can:
+ * - Has limited water capacity
+ * - Can water plants
+ * - Refills daily
  */
-
-
 public class WateringCan {
 
     private static final int MAX_WATER = 10;
@@ -18,10 +19,10 @@ public class WateringCan {
     }
 
     /**
-     * Attempts to water a soil tile
+     * Waters a soil tile
      *
      * @param soil the soil to water
-     * @return true if watering was successful
+     * @return true if successful
      */
     public boolean water(Soil soil) {
 
@@ -40,7 +41,6 @@ public class WateringCan {
 
     /**
      * Refills the watering can
-     * Called at the start of a new day
      */
     public void refill() {
         currentWater = MAX_WATER;

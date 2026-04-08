@@ -1,3 +1,11 @@
+/**
+ * Represents the Tomato plant
+ *
+ * - Long dormant phase
+ * - Late productive stages
+ * - Consistent harvest value
+ */
+
 public class Tomato extends Plant {
 
     public Tomato() {

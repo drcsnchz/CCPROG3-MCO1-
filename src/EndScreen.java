@@ -4,6 +4,18 @@ import java.awt.event.*;
 import java.io.InputStream;
 import java.util.List;
 
+
+/**
+ * Displays the end-of-season summary
+ *
+ * Shows:
+ * - Player name
+ * - Final savings
+ * - Top 10 leaderboard
+ *
+ * Provides options to restart or exit the game
+ */
+
 public class EndScreen extends JFrame {
 
     public EndScreen(Player player, List<HighScoreEntry> scores) {

@@ -3,6 +3,16 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.InputStream;
 
+
+
+/**
+ * Represents the starting screen of the game
+ *
+ * Allows the player to:
+ * - Enter their name
+ * - Start a new game
+ */
+
 public class WelcomeScreen extends JFrame {
 
     public WelcomeScreen() {

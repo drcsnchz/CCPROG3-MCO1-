@@ -49,15 +49,13 @@ public class HighScoreManager {
 
         HighScoreEntry newEntry = new HighScoreEntry(playerName, finalSavings);
 
-        // Case 1: Less than 10 scores → always add
+
         if (scores.size() < 10) {
             scores.add(newEntry);
         }
         else {
-            // Make sure list is sorted first
             sortScores();
 
-            // Get lowest score (last element)
             HighScoreEntry lowest = scores.get(scores.size() - 1);
 
             // Only add if better than lowest
@@ -66,12 +64,12 @@ public class HighScoreManager {
                 scores.add(newEntry);
             }
             else {
-                // Not good enough → do nothing
+
                 return;
             }
         }
 
-        // Re-sort after adding
+
         sortScores();
 
         // Save updated leaderboard

@@ -1,45 +1,45 @@
-
-//Represents the player of the game
- /**
- * The player has a name and savings which are used
- * to perform actions such as planting, watering,
- * fertilizing, and excavation
+/**
+ * Represents the player of the game
+ *
+ * The player has a name and savings used for game actions
  */
-
 public class Player {
 
     private String name;
     private int savings;
 
     /**
-     * Constructs a Player with the given name
-     * Starting savings is set to 1000 as required by game rules
+     * Constructs a Player
      *
-     * @param name the player's name
+     * @param name player name
      */
     public Player(String name) {
         this.name = name;
         this.savings = 1000;
     }
 
-
+    /**
+     * Gets player name
+     *
+     * @return player name
+     */
     public String getName() {
         return name;
     }
 
-
+    /**
+     * Gets player savings
+     *
+     * @return savings amount
+     */
     public int getSavings() {
         return savings;
     }
 
-
-     // Adds money to the player's savings.
-
-     /**
-     * Pre-condition: amount must be positive
-     * Post-condition: savings increases if valid
+    /**
+     * Adds money to savings
      *
-     * @param amount the amount to add
+     * @param amount amount to add
      */
     public void addMoney(int amount) {
         if (amount > 0) {
@@ -47,15 +47,11 @@ public class Player {
         }
     }
 
-
-     //Attempts to deduct money from the player's savings
-
-     /**
-     * Pre-condition: amount must be positive
-     * Post-condition: savings decreases only if sufficient funds exist
+    /**
+     * Deducts money from savings
      *
-     * @param amount the amount to deduct
-     * @return true if deduction successful, false otherwise
+     * @param amount amount to deduct
+     * @return true if successful
      */
     public boolean deductMoney(int amount) {
         if (amount > 0 && savings >= amount) {
@@ -65,17 +61,10 @@ public class Player {
         return false;
     }
 
-
+    /**
+     * Adds daily income
+     */
     public void addDailyIncome() {
         savings += 50;
-    }
-
-
-     /** Returns a formatted string representation of the player
-     *
-     * @return string containing player name and savings
-     */
-    public String toString() {
-        return "Player: " + name + " | Savings: " + savings;
     }
 }

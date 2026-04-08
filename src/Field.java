@@ -126,9 +126,13 @@ public class Field {
     /**
      * Displays a simple text-based view of the field
      *
+
      * P = plant
      * M = meteorite
      * . = empty
+     *
+     *  this has then since been replaced with the initials of the plant and M for meteorite with a red tile
+     *   ex. (Wheat = Wh, Meteorite = M)
      */
     public void displayField() {
 
